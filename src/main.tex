@@ -1,6 +1,6 @@
 \documentclass[12pt]{beamer}
 
-\usetheme{Darmstadt}        
+\usetheme{Darmstadt}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -12,123 +12,170 @@
 \usepackage{listings}    % code
 \usepackage{hyperref}    % links (beamer loads it with options)
 \usepackage{microtype}   % better typography
-% --- Metadata ---
-\title[Short Title]{Full Presentation Title}
-\subtitle{Optional subtitle}
-\author[Your Name]{Your Full Name}
-\institute[Inst.]{Department / Institution \\ \texttt{you@example.com}}
-\date{\today}
-\titlegraphic{\includegraphics[height=1.5cm]{example-image}} 
-
-\setbeamertemplate{navigation symbols}{} 
-\setbeamertemplate{footline}{
-  \leavevmode%
-  \hbox{%
-  \begin{beamercolorbox}[wd=.66\paperwidth,ht=2.5ex,dp=1ex,left]{author in head/foot}%
-    \usebeamerfont{author in head/foot}\hspace{2ex}\insertshortauthor
-  \end{beamercolorbox}%
-  \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,right]{date in head/foot}%
-    \usebeamerfont{date in head/foot}\insertshortdate\hspace{2ex}
-  \end{beamercolorbox}}%
-  \vskip0pt%
+\title{Logistic maps and chaos}
+\author[Anton \and Vasyl]{
+  Anton Valihurskyi\inst{1} \\
+  Maksym-Vasyl Tarnavskyi\inst{1}
 }
+\institute[Inst.]{\inst{1} Faculty of Applied Sciences, UCU\\}
+\date{}
 
-% --- Theorem environment example ---
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
-
-% --- Listings settings for code frames ---
-\lstset{
-  basicstyle=\small\ttfamily,
-  breaklines=true,
-  columns=fullflexible,
-  frame=single
-}
-
-% -----------------------
 \begin{document}
 
-% Title frame
 \begin{frame}[plain]
   \titlepage
 \end{frame}
 
-% Optional outline
 \begin{frame}{Outline}
   \tableofcontents
 \end{frame}
 
-% Section + a normal frame
 \section{Introduction}
-\begin{frame}{Motivation}
-  \begin{itemize}
-    \item Point 1: concise motivation
-    \item Point 2: quick facts / numbers
-    \item Point 3: what we will cover
-  \end{itemize}
+\begin{frame}{Problem statemet}
+  Suppose we want to know how much rabbits we will have next year. \pause
+
+  A fair assumption that next year's population depends on current.
+
+  \begin{equation}
+    x_{n+1} = rx_n
+  \end{equation}
+  Where $x_n$ is number (in, for example, thousands) of rabbits in year $n$ \pause
+  But this way it will grow infinitely, so let us add limiting factor
+  \begin{equation}
+    x_{n+1} = rx_n(1-x_n)
+  \end{equation}
+
 \end{frame}
 
-% Two-column frame
-\begin{frame}{Two columns example}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Left block}
-        Short list:
-        \begin{itemize}
-          \item item A
-          \item item B
-        \end{itemize}
-      \end{block}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \begin{exampleblock}{Right block}
-        \begin{itemize}
-          \item visual / figure
-        \end{itemize}
-      \end{exampleblock}
-    \end{column}
-  \end{columns}
-\end{frame}
+\begin{frame}{Logistic map}
+  This discrete equivalent of logistic equation is called \textit{logistic map}.
 
-% Theorem frame
-\section{Theory}
-\begin{frame}{A theorem}
-  \begin{theorem}
-    If \(f\) is continuous on \([a,b]\) then it is integrable.
-  \end{theorem}
-  \begin{proof}[Sketch]
-    Use uniform continuity on a compact interval, approximate by Riemann sums.
-  \end{proof}
-\end{frame}
+  We restrict ourselves to values $r \in [0,4]$ and $x \in [0,1]$. This way logistic map maps to itself, which is natural in population growth model.
 
-% Code frame
-\section{Implementation}
-\begin{frame}[fragile]{Code example}
-\begin{lstlisting}[language=Python]
-def hello(name):
-    print(f"Hello, {name}!")
-\end{lstlisting}
-\end{frame}
-
-% Figure full-width
-\begin{frame}{Full-width figure}
   \centering
-  \includegraphics[width=0.85\textwidth]{example-image-a}
-  \captionof{figure}{An example figure}
+  \includegraphics[width=0.8\textwidth]{../assets/logistic_curve.png}
+
 \end{frame}
 
-% Bibliography (bibtex) example
-\section{References}
-\begin{frame}[allowframebreaks]{References}
-  \bibliographystyle{plain}
-  \bibliography{refs} % create refs.bib in same folder or replace with thebibliography
+\begin{frame}{Period doubling}
+  One might notice, that periods doubles as $r$ growth.
+
+  \begin{table}[h!]
+    \centering
+    \begin{tabular}{c c}
+      \hline
+      $r_1 = 3$              & (period 2 is born) \\[4pt]
+      $r_2 = 3.449\ldots$    & $4$ \\[4pt]
+      $r_3 = 3.54409\ldots$  & $8$ \\[4pt]
+      $r_4 = 3.5644\ldots$   & $16$ \\[4pt]
+      $r_5 = 3.568759\ldots$ & $32$ \\[4pt]
+      $\vdots$               & $\vdots$ \\[4pt]
+      $r_\infty = 3.569946\ldots$ & $\infty$ \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  Interestingly, distance between consecutive transitions shrinks by constant factor
+  \begin{equation}
+    \delta = \lim_{n \to \infty} \dfrac{r_{n} - r_{n-1}}{r_{n+1} - r_{n}} \approx 4.669
+  \end{equation}
 \end{frame}
 
-% Appendix or backup slides
-\appendix
-\begin{frame}{Appendix: extra results}
-  Additional material, proofs, data.
+\section{Logistic map analysis}
+\begin{frame}{Stability analysis}
+
+  We call a fixed point $x^* = f(x^*)$, where $f$ generates map $x_{n+1} = x_n$ stable, if all points in its $\delta$-neighborhood converge to $x^*$.
+
+  \begin{align}
+    x^* + \eta_{n+1} &= x_{n+1} = f(x^* + x_n) \\&= f(x^*) + f'(x^*)\eta_n + o(\eta^2_n) \\
+    \Rightarrow \eta_{n+1} = f'(x^*)\eta_n + o(\eta^2_n)
+  \end{align}
+
+  If $o(\eta^2_n)$ is neglectable, than $x^*$ is linearly stable if $|f'(x^*)| < 1$. If $|f'(x^*)| > 1$ than the $x^*$ is unstable. Otherwise stability is defined by $o(\eta^2_n)$.
+
+\end{frame}
+
+\begin{frame}{Growth rate and chaos}
+  It is easy to see that fixed points are
+  \begin{equation}
+    x^*_1 = 0 \quad \text{and} \quad x^*_2 = 1 - \frac{1}{r}
+  \end{equation}
+  Where $x^*_2$ requires $r \ge 1$.
+
+  Stability depends on $f'(x^*) = r -2rx^*$. It is easy to see that $x^*_1$ is stable for $r<1$ and $x^*_2$ is stable for $r \in (1,3)$,and unstable $r>3$.
+
+  This hints us on why for $r>3$ the map does not converge.
+
+\end{frame}
+
+\begin{frame}{Growth rate and chaos}
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/r=1plot.png}
+\end{frame}
+
+\begin{frame}{Growth rate and chaos}
+  As $r>1$ the slope at $x^*$ gets very steep. We can show that critical slope is $f'(x^*) = -1$ is attanined at $r=3$.
+
+  Two periods exist $\iff$ $\exists p,q : f(p) = q \wedge f(q) = p$\\
+  $\iff f(f(p)) = p$
+  If we solve $f(f(x)) = x$ (polynomial of 4'th degree) and find roots besides $x^*_1, x^*_2$ we find that
+  \begin{equation}
+    p,q = \frac{r+1\pm\sqrt{(r-3)(r+1)}}{2r}
+  \end{equation}
+  For $r>3$ there are two distinct roots.Further more this 2-cycle deviation from $x^*$ is continuous in relation to $r$.
+\end{frame}
+
+\begin{frame}{Stability of 2-cycle bifurcation}
+  We can check stability of 2-cycle by looking at $f(f(x))$ the same way as we did for $f(x)$.
+
+  \begin{align}
+    \lambda = \frac{\mathrm{d}}{\mathrm{d}x}(f(f(x)))_{x=p} = 4+2r-r^2 \\
+    \Rightarrow |\lambda| < 1 \iff 3 < r < 1 + \sqrt{6} \approx 3.449
+  \end{align}
+\end{frame}
+
+\begin{frame}{Periodic windows}
+  From the orbit diagram, we could notice that after chaotic behavior, there is a window of period-3 ($3.8284.. < r < 3.8415$ ).
+  Black dots correspond to stable period-3 cycle.
+
+  \centering
+  \includegraphics[width=0.8\textheight]{../assets/qubic.png}
+\end{frame}
+
+\begin{frame}
+  Interestingly, we can find critical value of $r$ where period-3 window starts.
+
+  To do it we need to find $r \in (3.8, 3.83)$ such that $y=x$ becomes tangent to $f(f(f(x)))$.
+
+  Turns out solution can be found analytically, by considering following well-defined system:
+
+  \begin{align}
+    \begin{cases}
+      y = r x (1 - x) \\
+      z = r y (1 - y) \\
+      x = r z (1 - z) \\
+      \frac{\mathrm{d}(f^3(x))}{\mathrm{d}x}=r^3(1 - 2x)(1 - 2y)(1 - 2z) = 1
+    \end{cases}
+  \end{align}
+
+\end{frame}
+
+\begin{frame}
+
+  Through simple subsitution and algebraic manipulation presented in "The birth of period three" (Partha Saha, Steven H. Strogatz 1994), it can be found that $r = 1 + \sqrt{8} = 3.8284...$.
+
+  Which resembles $1+\sqrt{6}$.
+\end{frame}
+
+\begin{frame}{Ghost of period-3}
+
+\end{frame}
+
+\begin{frame}{Period doubling}
+  Turns out, this value cannot be expressed using other mathematical constant, thus it gained its own name \textit{Feigenbaum constant}
+
+  Feigenbaum was not good with computers, so he tried to calculate it manually with calculator.
+
 \end{frame}
 
 \end{document}
