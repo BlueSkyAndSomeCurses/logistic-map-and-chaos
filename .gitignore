@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+src/*
+!src/main.py
+!src/main.tex

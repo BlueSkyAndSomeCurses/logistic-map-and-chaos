@@ -1,0 +1,134 @@
+\documentclass[12pt]{beamer}
+
+\usetheme{Darmstadt}        
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+\usepackage{graphicx}    % include images
+\usepackage{booktabs}    % nicer tables
+\usepackage{amsmath,amssymb,amsthm} % math
+\usepackage{listings}    % code
+\usepackage{hyperref}    % links (beamer loads it with options)
+\usepackage{microtype}   % better typography
+% --- Metadata ---
+\title[Short Title]{Full Presentation Title}
+\subtitle{Optional subtitle}
+\author[Your Name]{Your Full Name}
+\institute[Inst.]{Department / Institution \\ \texttt{you@example.com}}
+\date{\today}
+\titlegraphic{\includegraphics[height=1.5cm]{example-image}} 
+
+\setbeamertemplate{navigation symbols}{} 
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.66\paperwidth,ht=2.5ex,dp=1ex,left]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\hspace{2ex}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.5ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate\hspace{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% --- Theorem environment example ---
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+
+% --- Listings settings for code frames ---
+\lstset{
+  basicstyle=\small\ttfamily,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single
+}
+
+% -----------------------
+\begin{document}
+
+% Title frame
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% Optional outline
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% Section + a normal frame
+\section{Introduction}
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item Point 1: concise motivation
+    \item Point 2: quick facts / numbers
+    \item Point 3: what we will cover
+  \end{itemize}
+\end{frame}
+
+% Two-column frame
+\begin{frame}{Two columns example}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Left block}
+        Short list:
+        \begin{itemize}
+          \item item A
+          \item item B
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{exampleblock}{Right block}
+        \begin{itemize}
+          \item visual / figure
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Theorem frame
+\section{Theory}
+\begin{frame}{A theorem}
+  \begin{theorem}
+    If \(f\) is continuous on \([a,b]\) then it is integrable.
+  \end{theorem}
+  \begin{proof}[Sketch]
+    Use uniform continuity on a compact interval, approximate by Riemann sums.
+  \end{proof}
+\end{frame}
+
+% Code frame
+\section{Implementation}
+\begin{frame}[fragile]{Code example}
+\begin{lstlisting}[language=Python]
+def hello(name):
+    print(f"Hello, {name}!")
+\end{lstlisting}
+\end{frame}
+
+% Figure full-width
+\begin{frame}{Full-width figure}
+  \centering
+  \includegraphics[width=0.85\textwidth]{example-image-a}
+  \captionof{figure}{An example figure}
+\end{frame}
+
+% Bibliography (bibtex) example
+\section{References}
+\begin{frame}[allowframebreaks]{References}
+  \bibliographystyle{plain}
+  \bibliography{refs} % create refs.bib in same folder or replace with thebibliography
+\end{frame}
+
+% Appendix or backup slides
+\appendix
+\begin{frame}{Appendix: extra results}
+  Additional material, proofs, data.
+\end{frame}
+
+\end{document}
