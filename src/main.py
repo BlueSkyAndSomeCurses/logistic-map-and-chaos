@@ -286,9 +286,156 @@ def _(go, np, optimize):
 
 
 @app.cell
+def _(pl, px):
+    def run_logistic_map(r: float, x0: float, iterations: int) -> pl.DataFrame:
+        if not 0 <= x0 <= 1:
+            raise ValueError("Initial value x0 must be between 0 and 1.")
+
+        iteration_list = list(range(iterations + 1))
+        x_n_list = [x0]
+
+        current_x = x0
+
+        for _ in range(iterations):
+            next_x = r * current_x * (1 - current_x)
+            x_n_list.append(next_x)
+            current_x = next_x
+
+        df = pl.DataFrame({
+            'Iteration': iteration_list,
+            'X_n': x_n_list,
+        })
+        return df
+
+    def plot_logistic_map(df: pl.DataFrame, r: float, x0: float):
+        fig = px.line(
+            df,
+            x='Iteration',
+            y='X_n',
+            title=f"Logistic Map Iterations (r={r}, x₀={x0})",
+            labels={'X_n': 'Population Ratio (X_n)', 'Iteration': 'Iteration (n)'}
+        )
+
+        fig.update_traces(
+            mode='lines+markers',
+            marker=dict(size=4),
+            line=dict(width=1)
+        )
+
+        fig.update_layout(
+            xaxis_title="Iteration (n)",
+            yaxis_title="Xn",
+            font=dict(family="Inter, sans-serif"),
+            hovermode="x unified",
+            template="plotly_white"
+        )
+
+        fig.update_yaxes(range=[0, 1])
+
+        fig.show()
+
+
+    R_PARAM = 3.8282
+    X0_PARAM = 0.5
+    NUM_ITERATIONS = 150
+
+
+    results_df = run_logistic_map(
+        r=R_PARAM,
+        x0=X0_PARAM,
+        iterations=NUM_ITERATIONS
+    )
+
+
+    plot_logistic_map(results_df, R_PARAM, X0_PARAM)
+
+    return
+
+
+@app.cell
 def _():
     import marimo as mo
     return (mo,)
+
+
+@app.cell
+def _(np, pl, px):
+    def calculate_lyapunov_exponent(r: float, x0: float = 0.5, n_iterations: int = 10000, n_transient: int = 100) -> float:
+        """
+        Calculate the Lyapunov exponent for the logistic map f(x) = r*x*(1-x).
+    
+        Args:
+            r: The growth rate parameter
+            x0: Initial condition (default 0.5)
+            n_iterations: Number of iterations to sum over
+            n_transient: Number of initial iterations to discard (let system settle)
+    
+        Returns:
+            The Lyapunov exponent λ
+        """
+        x = x0
+    
+        # Transient iterations to let the system settle
+        for _ in range(n_transient):
+            x = r * x * (1 - x)
+    
+        # Calculate Lyapunov exponent
+        lyapunov_sum = 0.0
+        for _ in range(n_iterations):
+            # Derivative f'(x) = r(1 - 2x)
+            derivative = abs(r * (1 - 2 * x))
+            if derivative > 0:
+                lyapunov_sum += np.log(derivative)
+            else:
+                # If derivative is 0, we hit a critical point - return -inf
+                return float('-inf')
+            # Iterate the map
+            x = r * x * (1 - x)
+    
+        return lyapunov_sum / n_iterations
+
+    # Calculate Lyapunov exponent for r in range [3, 4] with step 0.01
+    r_values_lyapunov = np.arange(3.0, 4.01, 0.01)
+    lyapunov_values = [calculate_lyapunov_exponent(r) for r in r_values_lyapunov]
+
+    # Create DataFrame with Polars
+    lyapunov_df = pl.DataFrame({
+        'r': r_values_lyapunov,
+        'lyapunov_exponent': lyapunov_values
+    })
+
+    # Plot with Plotly
+    lyapunov_fig = px.line(
+        lyapunov_df,
+        x='r',
+        y='lyapunov_exponent',
+        title='Lyapunov Exponent λ for Logistic Map f(x) = rx(1-x)',
+        labels={'r': 'Growth Rate (r)', 'lyapunov_exponent': 'Lyapunov Exponent (λ)'}
+    )
+
+    # Add horizontal line at λ = 0 (boundary between order and chaos)
+    lyapunov_fig.add_hline(y=0, line_dash="dash", line_color="red", 
+                            annotation_text="λ = 0 (chaos threshold)")
+
+    lyapunov_fig.update_layout(
+        xaxis_title="Growth Rate (r)",
+        yaxis_title="Lyapunov Exponent (λ)",
+        font=dict(family="Inter, sans-serif"),
+        template="plotly_white",
+        height=500,
+        width=800
+    )
+
+    lyapunov_fig.update_traces(line=dict(width=1))
+
+    lyapunov_fig.show()
+
+    # Display summary statistics
+    print(f"Lyapunov Exponent Statistics:")
+    print(f"Min λ: {min(lyapunov_values):.4f} at r = {r_values_lyapunov[np.argmin(lyapunov_values)]:.2f}")
+    print(f"Max λ: {max(lyapunov_values):.4f} at r = {r_values_lyapunov[np.argmax(lyapunov_values)]:.2f}")
+    print(f"\nChaotic regions (λ > 0): {sum(1 for l in lyapunov_values if l > 0)} out of {len(lyapunov_values)} r values")
+    return
 
 
 @app.cell

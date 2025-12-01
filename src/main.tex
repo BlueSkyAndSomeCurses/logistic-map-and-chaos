@@ -57,6 +57,13 @@
 
 \end{frame}
 
+\begin{frame}{}
+  \centering
+  \vfill
+  {\Huge Video}
+  \vfill
+\end{frame}
+
 \begin{frame}{Period doubling}
   One might notice, that periods doubles as $r$ growth.
 
@@ -81,13 +88,20 @@
   \end{equation}
 \end{frame}
 
+\begin{frame}{}
+  \centering
+  \vfill
+  {\Huge Video}
+  \vfill
+\end{frame}
+
 \section{Logistic map analysis}
 \begin{frame}{Stability analysis}
 
   We call a fixed point $x^* = f(x^*)$, where $f$ generates map $x_{n+1} = x_n$ stable, if all points in its $\delta$-neighborhood converge to $x^*$.
 
   \begin{align}
-    x^* + \eta_{n+1} &= x_{n+1} = f(x^* + x_n) \\&= f(x^*) + f'(x^*)\eta_n + o(\eta^2_n) \\
+    x^* + \eta_{n+1} &= x_{n+1} = f(x^* + \eta_n) \\&= f(x^*) + f'(x^*)\eta_n + o(\eta^2_n) \\
     \Rightarrow \eta_{n+1} = f'(x^*)\eta_n + o(\eta^2_n)
   \end{align}
 
@@ -123,6 +137,14 @@
     p,q = \frac{r+1\pm\sqrt{(r-3)(r+1)}}{2r}
   \end{equation}
   For $r>3$ there are two distinct roots.Further more this 2-cycle deviation from $x^*$ is continuous in relation to $r$.
+\end{frame}
+
+\begin{frame}
+  \centering
+  \vfill
+  {\Huge Cobweb Video}
+  \vfil
+
 \end{frame}
 
 \begin{frame}{Stability of 2-cycle bifurcation}
@@ -168,10 +190,56 @@
 \end{frame}
 
 \begin{frame}{Ghost of period-3}
+  $r = 3.8282$, just below period-3 window beginning
+
+  \begin{center}
+    \includegraphics[width=\textwidth]{../assets/ghost_of_period3.png}
+  \end{center}
 
 \end{frame}
 
+\begin{frame}
+  \centering
+  \vfill
+  {\Huge Cobweb Video}
+  \vfil
+
+\end{frame}
+
+\section{Chaos}
+\begin{frame}{Liapunov exponent for difference equation}
+  For point $x_0$ consider point in its $\delta$-neighborhood $x_0 + \delta_0$.
+
+  Let $\delta_n$ be distance between their $n$'th iterates.
+
+  If $|\delta_n| \approx e^{\lambda n} |\delta_0|$, then $\lambda$ is called Liapunov exponent.
+
+  Naturally, positive $\lambda$ leads to chaos. \pause
+
+  Notice that $\delta_n = f^n(x_0 + \delta_0) - f^n(x_0) $ and
+  \begin{align}
+    \lambda &\approx \frac{1}{n}\ln{\left|\frac{f^n(x_0 + \delta_0) - f^n(x_0)}{\delta_0}\right|} \\
+    &\overset{\delta_0 \rightarrow 0}{=} \frac{1}{n}\ln{\left| (f^n)'(x_0) \right|} \\
+  \end{align}
+  We can see that
+  \begin{equation}
+    \lambda \approx \frac{1}{n}\ln{\left| \prod_{i=0}^{n-1}f'(x_i) \right|} =  \frac{1}{n} \sum_{i=0}^{n-1}\ln{|f'(x_i)|}
+  \end{equation}
+
+\end{frame}
+
+\begin{frame}{Liapunov exponent for logistic map}
+  Formula (15) gives hints us on how to calculate Liapunov exponent to get a glimps of chaotic behavior in logistic map.
+
+  For each $r \in [3,4]$ calculate $\lambda$ for large number of iterations and initial point $x_0 = 0.5$.
+
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/lyapunov_exp.png}
+\end{frame}
+
 \begin{frame}{Period doubling}
+  \Huge {TODO...}\\
+
   Turns out, this value cannot be expressed using other mathematical constant, thus it gained its own name \textit{Feigenbaum constant}
 
   Feigenbaum was not good with computers, so he tried to calculate it manually with calculator.
