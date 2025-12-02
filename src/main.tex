@@ -241,7 +241,7 @@
 \begin{frame}{Period doubling}
 
   Turns out, logistic map is not the only map that exhibits period doubling route to chaos. This phenomenon is universal for a wide class of maps (so called unimodal maps).
-  Basically, any smooth, concave down map with a single maximum.
+  Basically, a smooth, concave down map with a single maximum.
   \centering
   \includegraphics[width=0.9\textheight]{../assets/unimodal.png}
 
@@ -266,6 +266,15 @@
 \begin{frame}{Period doubling}
   \centering
   \includegraphics[width=0.9\textheight]{../assets/constants.png}
+\end{frame}
+
+\begin{frame}{Self-Similarity (The Intuition)}
+\begin{itemize}
+    \item \textbf{The Problem:} Analyzing bifurcation points ($r_n$) is mathematically messy.
+    \item \textbf{The Solution:} Analyze \textbf{Superstable Cycles} ($R_n$) instead.
+    \item A cycle of period $2^n$ is \textit{superstable} when its multiplier is zero: $|(f^{2^n})'(x^*)| = 0$.
+    \item This happens when the cycle passes exactly through the maximum of the function ($x_m$).
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Self-Similarity (The Intuition)}
