@@ -38,7 +38,7 @@ def _(fig, np, pl, px):
     cobweb_cobweb_cobweb_cobweb_fig = px.line(df, x="x", y="y", color="r", title="Logistic Curve: y = r * x * (1 - x)",
                   labels={"x": "x", "y": "y", "r": "Growth Rate (r)"}, template="plotly_white")
 
-    fig.show()
+    cobweb_cobweb_cobweb_cobweb_fig.show()
     return
 
 
@@ -437,6 +437,97 @@ def _(np, pl, px):
     print(f"\nChaotic regions (λ > 0): {sum(1 for l in lyapunov_values if l > 0)} out of {len(lyapunov_values)} r values")
     return
 
+
+@app.cell
+def _():
+    from plotly.subplots import make_subplots
+
+
+@app.cell
+def _(go, make_subplots, np):
+    
+    def logistic_map(r, x):
+        return r * x * (1 - x)
+
+    def sine_map(r, x):
+        return r * np.sin(np.pi * x)
+
+    def bifurcation_diagram(map_func, r_min, r_max, r_steps, x0=0.5, iterations=2000, last_points=200):
+
+        R = np.linspace(r_min, r_max, r_steps)
+        X_plot = []
+        R_plot = []
+        
+        for r_val in R:
+            x = x0
+            for _ in range(iterations):
+                x = map_func(r_val, x)
+            
+            for _ in range(last_points):
+                x = map_func(r_val, x)
+                X_plot.append(x)
+                R_plot.append(r_val)
+                
+        return np.array(R_plot), np.array(X_plot)
+
+    R_POINTS = 500 
+    
+    R_START_LOG = 2.9
+    R_END_LOG = 4.0
+    R_log, X_log = bifurcation_diagram(logistic_map, R_START_LOG, R_END_LOG, R_POINTS)
+    
+    R_START_SINE = 0.7
+    R_END_SINE = 1.0
+    R_sine, X_sine = bifurcation_diagram(sine_map, R_START_SINE, R_END_SINE, R_POINTS)
+
+    
+    fig_universal = make_subplots(rows=1, cols=2, 
+                                  subplot_titles=(
+                                      r'Logistic Map: $x_{n+1} = r x_n (1 - x_n)$', 
+                                      r'Sine Map: $x_{n+1} = r \sin(\pi x_n)$'
+                                  ))
+
+    fig_universal.add_trace(go.Scattergl(
+        x=R_log, y=X_log, 
+        mode='markers', 
+        name='Logistic Map',
+        marker=dict(size=1, color='darkblue', opacity=0.1)
+    ), row=1, col=1)
+
+    fig_universal.add_trace(go.Scattergl(
+        x=R_sine, y=X_sine, 
+        mode='markers', 
+        name='Sine Map',
+        marker=dict(size=1, color='red', opacity=0.1)
+    ), row=1, col=2)
+
+    fig_universal.update_layout(
+        title_text=r'<b>Feigenbaum Universality: Period Doubling Cascade Comparison</b>', 
+        height=600, width=1200, 
+        showlegend=False, 
+        template="plotly_white"
+    )
+
+    fig_universal.update_xaxes(title_text="Growth Rate (r)", range=[R_START_LOG, R_END_LOG], row=1, col=1)
+    fig_universal.update_yaxes(title_text="Asymptotic x values", range=[0, 1], row=1, col=1)
+    
+    fig_universal.update_xaxes(title_text="Growth Rate (r)", range=[R_START_SINE, R_END_SINE], row=1, col=2)
+    fig_universal.update_yaxes(title_text="Asymptotic x values", range=[0, 1], row=1, col=2)
+    
+    fig_universal.add_annotation(
+        x=0.5, y=-0.15,
+        xref="paper", yref="paper",
+        text=r"Despite different parameter ranges ($r$), the *shape* and *scaling* of the period doubling cascade are identical, governed by the universal constant $\delta \approx 4.669$.",
+        showarrow=False,
+        font=dict(size=12, color="gray"),
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=1,
+        borderpad=4
+    )
+
+    fig_universal.show()
+    return
 
 @app.cell
 def _():
