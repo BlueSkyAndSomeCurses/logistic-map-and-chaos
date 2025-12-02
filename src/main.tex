@@ -12,6 +12,7 @@
 \usepackage{listings}    % code
 \usepackage{hyperref}    % links (beamer loads it with options)
 \usepackage{microtype}   % better typography
+\usepackage{lmodern}
 \title{Logistic maps and chaos}
 \author[Anton \and Vasyl]{
   Anton Valihurskyi\inst{1} \\
@@ -34,7 +35,7 @@
 \begin{frame}{Problem statemet}
   Suppose we want to know how much rabbits we will have next year. \pause
 
-  A fair assumption that next year's population depends on current.
+  A fair assumption is that the next year's population depends on the current.
 
   \begin{equation}
     x_{n+1} = rx_n
@@ -65,7 +66,7 @@
 \end{frame}
 
 \begin{frame}{Period doubling}
-  One might notice, that periods doubles as $r$ growth.
+  One might notice, that periods double as $r$ grows.
 
   \begin{table}[h!]
     \centering
@@ -105,7 +106,7 @@
     \Rightarrow \eta_{n+1} = f'(x^*)\eta_n + o(\eta^2_n)
   \end{align}
 
-  If $o(\eta^2_n)$ is neglectable, than $x^*$ is linearly stable if $|f'(x^*)| < 1$. If $|f'(x^*)| > 1$ than the $x^*$ is unstable. Otherwise stability is defined by $o(\eta^2_n)$.
+  If $o(\eta^2_n)$ is neglectable, then $x^*$ is linearly stable if $|f'(x^*)| < 1$. If $|f'(x^*)| > 1$, then the $x^*$ is unstable. Otherwise stability is defined by $o(\eta^2_n)$.
 
 \end{frame}
 
@@ -116,7 +117,7 @@
   \end{equation}
   Where $x^*_2$ requires $r \ge 1$.
 
-  Stability depends on $f'(x^*) = r -2rx^*$. It is easy to see that $x^*_1$ is stable for $r<1$ and $x^*_2$ is stable for $r \in (1,3)$,and unstable $r>3$.
+  Stability depends on $f'(x^*) = r -2rx^*$. It is easy to see that $x^*_1$ is stable for $r<1$ and $x^*_2$ is stable for $r \in (1,3)$, and unstable if $r>3$.
 
   This hints us on why for $r>3$ the map does not converge.
 
@@ -128,15 +129,15 @@
 \end{frame}
 
 \begin{frame}{Growth rate and chaos}
-  As $r>1$ the slope at $x^*$ gets very steep. We can show that critical slope is $f'(x^*) = -1$ is attanined at $r=3$.
+  As $r>1$ the slope at $x^*$ gets very steep. We can show that critical slope $f'(x^*) = -1$ is attained at $r=3$.
 
   Two periods exist $\iff$ $\exists p,q : f(p) = q \wedge f(q) = p$\\
-  $\iff f(f(p)) = p$
-  If we solve $f(f(x)) = x$ (polynomial of 4'th degree) and find roots besides $x^*_1, x^*_2$ we find that
+  $\iff f(f(p)) = p$.
+  If we solve $f(f(x)) = x$ (polynomial of 4'th degree) and find roots besides $x^*_1, x^*_2$, we find that
   \begin{equation}
     p,q = \frac{r+1\pm\sqrt{(r-3)(r+1)}}{2r}
   \end{equation}
-  For $r>3$ there are two distinct roots.Further more this 2-cycle deviation from $x^*$ is continuous in relation to $r$.
+  For $r>3$ there are two distinct roots. Furthermore, this 2-cycle deviation from $x^*$ is continuous in relation to $r$.
 \end{frame}
 
 \begin{frame}
@@ -229,7 +230,7 @@
 \end{frame}
 
 \begin{frame}{Liapunov exponent for logistic map}
-  Formula (15) gives hints us on how to calculate Liapunov exponent to get a glimps of chaotic behavior in logistic map.
+  Formula (15) gives hints us on how to calculate Liapunov exponent to get a glimpse of chaotic behavior in logistic map.
 
   For each $r \in [3,4]$ calculate $\lambda$ for large number of iterations and initial point $x_0 = 0.5$.
 
@@ -238,12 +239,141 @@
 \end{frame}
 
 \begin{frame}{Period doubling}
-  \Huge {TODO...}\\
 
-  Turns out, this value cannot be expressed using other mathematical constant, thus it gained its own name \textit{Feigenbaum constant}
+  Turns out, logistic map is not the only map that exhibits period doubling route to chaos. This phenomenon is universal for a wide class of maps (so called unimodal maps).
+  Basically, any smooth, concave down map with a single maximum.
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/unimodal.png}
 
-  Feigenbaum was not good with computers, so he tried to calculate it manually with calculator.
+\end{frame}
 
+\begin{frame}{Period doubling}
+
+  Moreover, for all unimodal maps $x_{n+1} = rf(x_n)$ with $f(0) = f(1) = 0$, the ratio of distances between bifurcation points approaches the same constant $\delta = \lim_{n \to \infty} \frac{r_{n} - r_{n-1}}{r_{n+1} - r_{n}} \approx 4.6692016...$.
+
+  $$\Delta_n = r_{n+1} - r_{n}$$
+  $$\frac{\Delta_n}{\Delta_{n+1}} \to \delta \quad \text{as } n \to \infty$$
+
+  There is also universal scaling in the $x$-direction, but it is easier to show on the graph.
+
+    \begin{equation*}
+  \alpha = \lim_{n \to \infty} \frac{d_{n}}{d_{n+1}} \approx -2.5029078...
+  \end{equation*}
+
+
+\end{frame}
+
+\begin{frame}{Period doubling}
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/constants.png}
+\end{frame}
+
+\begin{frame}{Self-Similarity (The Intuition)}
+  \textbf{The Comparison:} Compare the map $f(x)$ (fixed point at $R_0$) vs. the second iterate $f^2(x)$ (two fixed points at $R_1$).\\
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/self_similarity.PNG}
+\end{frame}
+
+\begin{frame}{Self-Similarity (The Intuition)}
+  \textbf{Looking at $f^2$:} A $2$-cycle $p \to q \to p$ becomes two stable fixed points of $f^2(x)$.\\
+  \textbf{"Zoom":} If we focus on one of those fixed points in $f^2$ (after appropriate parameter shift) and apply magnification/flip:
+  \begin{center}
+      $f^2(x, R_1)$ looks \textbf{identical} to $f(x, R_0)$.
+  \end{center}
+  \textbf{Conclusion:} The dynamics are the same, only scaled down.
+
+\end{frame}
+
+\begin{frame}{The Renormalization Operator}
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/renorm.png}
+
+\end{frame}
+
+\begin{frame}{The Renormalization Operator}
+  \textbf{The Operator:} The Renormalization Operator $T$ formalizes the self-similarity by combining iteration and scaling:
+  \begin{equation*}
+  T[f(x, r)] = \alpha f(f(x/\alpha, r), r)
+  \end{equation*}
+  
+  \textbf{Renormalization Step (3 operations):}
+  \begin{enumerate}
+      \item \textbf{Iterate:} Look at $f^2$ (dynamics of period $2^n$).
+      \item \textbf{Shift:} Adjust $r$ to the next superstable value $R_{n+1}$.
+      \item \textbf{Rescale:} Magnify the axes by a factor $\alpha$.
+  \end{enumerate}
+  
+  \textbf{The Approximate Relation:}
+  \begin{equation*}
+  f(x, R_0) \approx \alpha f(f(x/\alpha, R_1), R_1)
+  \end{equation*}
+\end{frame}
+
+\begin{frame}{The Renormalization Operator}
+  \textbf{The Scaling Factor $\alpha$ (Alpha):}
+  \begin{itemize}
+      \item To match the graphs, the magnitude of scaling is:
+      $$\alpha \approx -2.5029078...$$
+      \item The negative sign indicates the branches are \textbf{flipped (inverted)} around the maximum $x_m$ at each doubling.
+  \end{itemize}
+  
+  \centering
+  $$\mathbf{f^2(x)} \xrightarrow{\text{Rescale by } \alpha} \approx \mathbf{f(x)}$$
+
+\end{frame}
+
+\begin{frame}{The Limit Function}
+
+  \begin{itemize}
+      \item If we repeat the Renormalization process $n \to \infty$ times, the functions converge to a \textbf{universal limit function} $g(x)$.
+      \item This function satisfies the Functional Equation:
+      \begin{equation}
+      g(x) = \alpha g(g(x/\alpha))
+      \end{equation}
+  \end{itemize}
+
+      \textbf{Universality Explained:}
+      \begin{enumerate}
+          \item The solution to the above depends \textbf{only} on the behavior of the function near its maximum (quadratic shape).
+          \item It does \textbf{not} depend on the global shape of the original map ($f$).
+      \end{enumerate}
+\end{frame}
+
+\begin{frame}{The Limit Function}
+  The constants $\alpha$ and $\delta$ are derived from the properties of this universal function $g(x)$ and are therefore the same for all unimodal maps undergoing this period-doubling route to chaos.
+  \vspace{1em}
+  \centering
+  \begin{itemize}
+      \item $\boldsymbol{\delta \approx 4.669}$: Parameter scaling (eigenvalue).
+      \item $\boldsymbol{\alpha \approx -2.503}$: Variable scaling.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{1D Maps in Science}
+  \begin{itemize}
+      \item Real physical systems (e.g., convecting fluids, electronic circuits) have a huge number of degrees of freedom.
+      \item However, if the system is \textbf{highly dissipative} (strong damping), only a few variables (e.g., 2 or 3) are truly \textbf{active}.
+      \item The dynamics of these active variables can often be "captured" by a simple one-dimensional map.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{1D Maps in Science}
+  \centering
+  \includegraphics[width=0.9\textheight]{../assets/rossler_attr.png}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+  \vfill
+  {\Huge Thank you for your attention!}
+  \vspace{2em}
+  \vfill
+  {Sources: \\
+      Strogatz, Steven H. \textit{Nonlinear Dynamics and Chaos: With Applications to Physics, Biology, Chemistry, and Engineering}. 2nd ed., Westview Press, 2015. \\
+  \vfill
+  }
 \end{frame}
 
 \end{document}
